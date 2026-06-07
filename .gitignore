@@ -1,0 +1,31 @@
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# PHP
+vendor/
+composer.lock
+
+# Bases de datos
+mysql_data/
+
+# Variables de entorno
+.env
+.env.local
+.env.*.local
+
+# Logs
+*.log
+logs/
+
+# Caché
+.cache/
+tmp/
+
+# Sistema operativo
+Thumbs.db
+.DS_Store

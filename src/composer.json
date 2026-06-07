@@ -1,0 +1,23 @@
+{
+    "name": "todo-camisetas/api",
+    "description": "API RESTful para sistema de gestión de camisetas con Docker",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Examen Backend",
+            "email": "test@todocamisetas.dev"
+        }
+    ],
+    "require": {
+        "php": ">=8.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "Config\\": "config/",
+            "Controllers\\": "controllers/",
+            "Models\\": "models/",
+            "Database\\": "database/"
+        }
+    }
+}
