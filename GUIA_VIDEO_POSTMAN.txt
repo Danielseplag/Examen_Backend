@@ -1,0 +1,67 @@
+# GUÍA PARA GRABACIÓN DE VIDEO: PRUEBAS EN POSTMAN
+
+¡Hola equipo! Aquí tienen el "guion" paso a paso para grabar el video demostrativo de la API TodoCamisetas.
+Sigan este orden exacto para que el video quede estructurado, lógico y cubra toda la rúbrica del examen.
+
+---
+
+### PREPARACIÓN (Antes de grabar)
+1. Abre tu terminal y asegúrate de que los contenedores están corriendo (`docker compose ps`).
+2. Abre Postman.
+3. Importa el archivo `TodoCamisetas_Postman_Collection.json` si aún no lo has hecho.
+4. Opcionalmente: Ejecuta en tu terminal el comando para vaciar y crear la base de datos limpia, así todos los IDs empezarán desde el número 1:
+   `docker compose down -v && docker compose up -d && docker compose exec php php migrate.php`
+
+---
+
+### 🎬 ¡ACCIÓN! (Inicio de grabación)
+
+#### PASO 1: Demostrar que los contenedores están arriba (Opcional pero recomendado)
+- Muestra la terminal con el comando `docker compose ps` para que el profesor vea que Nginx, PHP y MySQL están activos.
+- Di: "Vamos a probar nuestra API RESTful TodoCamisetas corriendo bajo Docker".
+
+#### PASO 2: Creación de Datos (Método POST)
+1. Ve a Postman, abre la carpeta **Camisetas**.
+2. Selecciona **Crear Camiseta (POST)**.
+3. Muestra el Body en formato JSON (menciona los atributos: título, tipo, precio: 45000, precio_oferta: 35000).
+4. Haz clic en **Send**.
+5. Muestra la respuesta abajo: *Status 201 Created* y el objeto devuelto con su `id: 1`.
+
+6. Ahora ve a la carpeta **Clientes**.
+7. Selecciona **Crear Cliente Preferencial (POST)**.
+8. Muestra el Body haciendo énfasis en la categoría "Preferencial". Dale a **Send**. (Devolverá id: 1).
+9. Selecciona **Crear Cliente Regular (POST)**.
+10. Muestra el Body haciendo énfasis en la categoría "Regular". Dale a **Send**. (Devolverá id: 2).
+
+#### PASO 3: Listado de Datos (Método GET)
+1. Ve a **Listar Camisetas (GET)** y dale a **Send**. Muestra que la camiseta creada aparece en el array.
+2. Ve a **Listar Clientes (GET)** y dale a **Send**. Muestra el array con los dos clientes B2B.
+
+#### PASO 4: La Prueba de Fuego - Lógica de Negocios (Tarea 6)
+1. Ve a la carpeta Camisetas y selecciona **Obtener Precio Final (GET)**.
+2. En la URL o en la pestaña Params, asegúrate de que diga `cliente_id=1` (Nuestro cliente preferencial).
+3. Dale a **Send**.
+4. **⚠️ HAZ ZOOM O SEÑALA ESTO:** Muestra que en la respuesta dice `"precio_final": "35000.00"` y `"motivo": "Precio de oferta aplicado (cliente Preferencial)"`.
+5. Ahora, cambia el parámetro a `cliente_id=2` (Nuestro cliente regular) y vuelve a dar **Send**.
+6. **⚠️ HAZ ZOOM O SEÑALA ESTO:** Muestra que ahora la respuesta dice `"precio_final": "45000.00"` y `"motivo": "Precio base aplicado"`.
+7. Di: "Aquí demostramos cómo el modelo aplica la regla de negocio dinámicamente según la categoría del cliente".
+
+#### PASO 5: Actualización de Datos (Método PUT)
+1. Ve a **Actualizar Camiseta (PUT)**.
+2. Muestra que la URL apunta a `/api/camisetas/1`.
+3. Muestra el Body donde el precio sube a 49990. Dale a **Send**.
+4. Muestra la respuesta: los datos se actualizaron correctamente (Status 200 OK).
+
+5. (Opcional) Ve a **Actualizar Cliente (PUT)**, dale a **Send** y muestra cómo cambian los datos de contacto.
+
+#### PASO 6: Eliminación de Datos (Método DELETE)
+1. Ve a **Eliminar Cliente (DELETE)**.
+2. Muestra que la URL apunta a `/api/clientes/1`.
+3. Dale a **Send**.
+4. Muestra la respuesta: `{"message": "Cliente eliminado correctamente"}`.
+5. Puedes ir rápidamente a "Listar Clientes (GET)", darle a Send y mostrar que el cliente 1 ya no existe en el listado, confirmando el borrado.
+
+---
+🎬 **¡Corte!**
+
+Con este flujo tu video será impecable, durará unos pocos minutos y demostrará sin lugar a dudas que dominas el CRUD completo y la lógica de negocio requerida en la rúbrica. ¡Éxito!

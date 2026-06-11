@@ -44,6 +44,40 @@
 					}
 				},
 				{
+					"name": "Actualizar Camiseta",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{"key": "Content-Type", "value": "application/json"}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"precio\": 49990,\n    \"detalles\": \"Precio actualizado por inflación\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/camisetas/1",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8080",
+							"path": ["api", "camisetas", "1"]
+						}
+					}
+				},
+				{
+					"name": "Eliminar Camiseta",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/camisetas/1",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8080",
+							"path": ["api", "camisetas", "1"]
+						}
+					}
+				},
+				{
 					"name": "Obtener Precio Final (Lógica de Negocio)",
 					"request": {
 						"method": "GET",
@@ -65,6 +99,20 @@
 		{
 			"name": "Clientes",
 			"item": [
+				{
+					"name": "Listar Clientes",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/clientes",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8080",
+							"path": ["api", "clientes"]
+						}
+					}
+				},
 				{
 					"name": "Crear Cliente Preferencial",
 					"request": {
@@ -102,6 +150,40 @@
 							"host": ["localhost"],
 							"port": "8080",
 							"path": ["api", "clientes"]
+						}
+					}
+				},
+				{
+					"name": "Actualizar Cliente",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{"key": "Content-Type", "value": "application/json"}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"contacto_nombre\": \"Juan Pedro Pérez\",\n    \"descuento_porcentaje\": 15\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/clientes/1",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8080",
+							"path": ["api", "clientes", "1"]
+						}
+					}
+				},
+				{
+					"name": "Eliminar Cliente",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/clientes/1",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8080",
+							"path": ["api", "clientes", "1"]
 						}
 					}
 				}
