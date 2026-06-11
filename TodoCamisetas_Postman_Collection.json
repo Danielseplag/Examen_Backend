@@ -1,0 +1,111 @@
+{
+	"info": {
+		"_postman_id": "b96e5c54-4a58-4c16-b8b8-085fb0b0e52f",
+		"name": "TodoCamisetas API - Examen",
+		"description": "Colección completa para probar el CRUD de Camisetas, Clientes, y la logística de Precio Final.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Camisetas",
+			"item": [
+				{
+					"name": "Listar Camisetas",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/camisetas",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8080",
+							"path": ["api", "camisetas"]
+						}
+					}
+				},
+				{
+					"name": "Crear Camiseta",
+					"request": {
+						"method": "POST",
+						"header": [
+							{"key": "Content-Type", "value": "application/json"}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"sku\": \"SCL2025L\",\n    \"titulo\": \"Camiseta Local 2025 - Selección Chilena\",\n    \"club\": \"Selección Chilena\",\n    \"pais\": \"Chile\",\n    \"tipo\": \"Local\",\n    \"color\": \"Blanco y Negro\",\n    \"precio\": 45000,\n    \"precio_oferta\": 35000,\n    \"detalles\": \"Edición aniversario 2025\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/camisetas",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8080",
+							"path": ["api", "camisetas"]
+						}
+					}
+				},
+				{
+					"name": "Obtener Precio Final (Lógica de Negocio)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/camisetas/1/precio-final?cliente_id=1",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8080",
+							"path": ["api", "camisetas", "1", "precio-final"],
+							"query": [
+								{"key": "cliente_id", "value": "1"}
+							]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "Clientes",
+			"item": [
+				{
+					"name": "Crear Cliente Preferencial",
+					"request": {
+						"method": "POST",
+						"header": [
+							{"key": "Content-Type", "value": "application/json"}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"rut\": \"12.345.678-9\",\n    \"nombre_comercial\": \"90minutos\",\n    \"direccion\": \"Providencia, Santiago\",\n    \"categoria\": \"Preferencial\",\n    \"contacto_nombre\": \"Juan Pérez\",\n    \"contacto_email\": \"juan@90minutos.cl\",\n    \"descuento_porcentaje\": 5\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/clientes",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8080",
+							"path": ["api", "clientes"]
+						}
+					}
+				},
+				{
+					"name": "Crear Cliente Regular",
+					"request": {
+						"method": "POST",
+						"header": [
+							{"key": "Content-Type", "value": "application/json"}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"rut\": \"98.765.432-1\",\n    \"nombre_comercial\": \"tdeportes\",\n    \"direccion\": \"Providencia, Santiago\",\n    \"categoria\": \"Regular\",\n    \"contacto_nombre\": \"Pedro Sanchez\",\n    \"contacto_email\": \"pedro@tdeportes.cl\",\n    \"descuento_porcentaje\": 0\n}"
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/clientes",
+							"protocol": "http",
+							"host": ["localhost"],
+							"port": "8080",
+							"path": ["api", "clientes"]
+						}
+					}
+				}
+			]
+		}
+	]
+}

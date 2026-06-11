@@ -11,7 +11,7 @@
  */
 
 // Definir rutas
-define('BASE_PATH', __DIR__ . '/src');
+define('BASE_PATH', __DIR__);
 
 // Cargar autoloader
 require_once BASE_PATH . '/vendor/autoload.php';

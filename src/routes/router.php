@@ -38,6 +38,12 @@ if ($method === 'GET' && preg_match('#^/api/camisetas/?$#', $uri)) {
     $routeFound = true;
 }
 
+// GET /api/camisetas/{id}/precio-final - Obtener precio final
+if ($method === 'GET' && preg_match('#^/api/camisetas/(\d+)/precio-final/?$#', $uri, $matches)) {
+    CamisetaController::getPrecioFinal($matches[1]);
+    $routeFound = true;
+}
+
 // GET /api/camisetas/{id} - Obtener una camiseta
 if ($method === 'GET' && preg_match('#^/api/camisetas/(\d+)/?$#', $uri, $matches)) {
     CamisetaController::show($matches[1]);

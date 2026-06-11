@@ -1,0 +1,9 @@
+{
+  "rut": "12.345.678-9",
+  "nombre_comercial": "90minutos",
+  "direccion": "Santiago",
+  "categoria": "Preferencial",
+  "contacto_nombre": "Juan",
+  "contacto_email": "juan@90m.cl",
+  "descuento_porcentaje": 10
+}

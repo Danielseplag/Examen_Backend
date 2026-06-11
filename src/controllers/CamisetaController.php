@@ -2,8 +2,9 @@
 
 namespace Controllers;
 
-use Config\Database;
 use Config\Response;
+use Models\Camiseta;
+use Models\Cliente;
 use PDOException;
 
 class CamisetaController
@@ -14,12 +15,7 @@ class CamisetaController
     public static function index(): void
     {
         try {
-            $db = Database::getConnection();
-            $query = "SELECT * FROM camisetas ORDER BY id DESC";
-            $stmt = $db->prepare($query);
-            $stmt->execute();
-            $camisetas = $stmt->fetchAll();
-
+            $camisetas = Camiseta::all();
             Response::success($camisetas);
         } catch (PDOException $e) {
             Response::error("Error al obtener camisetas: " . $e->getMessage(), 500);
@@ -32,11 +28,7 @@ class CamisetaController
     public static function show($id): void
     {
         try {
-            $db = Database::getConnection();
-            $query = "SELECT * FROM camisetas WHERE id = ?";
-            $stmt = $db->prepare($query);
-            $stmt->execute([$id]);
-            $camiseta = $stmt->fetch();
+            $camiseta = Camiseta::find($id);
 
             if (!$camiseta) {
                 Response::error("Camiseta no encontrada", 404);
@@ -57,28 +49,15 @@ class CamisetaController
             $data = json_decode(file_get_contents('php://input'), true);
 
             // Validar campos requeridos
-            Response::validateRequired($data, ['sku', 'club', 'precio']);
+            Response::validateRequired($data, ['sku', 'titulo', 'club', 'pais', 'tipo', 'color', 'precio']);
 
-            $db = Database::getConnection();
-            $query = "INSERT INTO camisetas (sku, club, precio, precio_oferta, descripcion, activa) 
-                     VALUES (?, ?, ?, ?, ?, ?)";
-            $stmt = $db->prepare($query);
+            $tiposValidos = ['Local', 'Visita', '3era Camiseta', 'Femenino Local', 'Niño'];
+            if (!in_array($data['tipo'], $tiposValidos)) {
+                Response::error("El tipo de camiseta no es válido", 400);
+            }
 
-            $activa = $data['activa'] ?? true;
-            $stmt->execute([
-                $data['sku'],
-                $data['club'],
-                $data['precio'],
-                $data['precio_oferta'] ?? null,
-                $data['descripcion'] ?? null,
-                $activa ? 1 : 0,
-            ]);
-
-            $id = $db->lastInsertId();
-            $query = "SELECT * FROM camisetas WHERE id = ?";
-            $stmt = $db->prepare($query);
-            $stmt->execute([$id]);
-            $camiseta = $stmt->fetch();
+            $id = Camiseta::create($data);
+            $camiseta = Camiseta::find($id);
 
             Response::success($camiseta, 201);
         } catch (PDOException $e) {
@@ -97,62 +76,25 @@ class CamisetaController
         try {
             $data = json_decode(file_get_contents('php://input'), true);
 
-            $db = Database::getConnection();
-
-            // Verificar que la camiseta existe
-            $query = "SELECT * FROM camisetas WHERE id = ?";
-            $stmt = $db->prepare($query);
-            $stmt->execute([$id]);
-            $camiseta = $stmt->fetch();
-
+            $camiseta = Camiseta::find($id);
             if (!$camiseta) {
                 Response::error("Camiseta no encontrada", 404);
             }
 
-            // Construir update dinámico
-            $updates = [];
-            $params = [];
-
-            if (isset($data['sku'])) {
-                $updates[] = "sku = ?";
-                $params[] = $data['sku'];
-            }
-            if (isset($data['club'])) {
-                $updates[] = "club = ?";
-                $params[] = $data['club'];
-            }
-            if (isset($data['precio'])) {
-                $updates[] = "precio = ?";
-                $params[] = $data['precio'];
-            }
-            if (isset($data['precio_oferta'])) {
-                $updates[] = "precio_oferta = ?";
-                $params[] = $data['precio_oferta'];
-            }
-            if (isset($data['descripcion'])) {
-                $updates[] = "descripcion = ?";
-                $params[] = $data['descripcion'];
-            }
-            if (isset($data['activa'])) {
-                $updates[] = "activa = ?";
-                $params[] = $data['activa'] ? 1 : 0;
+            if (isset($data['tipo'])) {
+                $tiposValidos = ['Local', 'Visita', '3era Camiseta', 'Femenino Local', 'Niño'];
+                if (!in_array($data['tipo'], $tiposValidos)) {
+                    Response::error("El tipo de camiseta no es válido", 400);
+                }
             }
 
-            if (empty($updates)) {
-                Response::error("No hay campos para actualizar", 400);
+            $updated = Camiseta::update($id, $data);
+
+            if ($updated === false) {
+                Response::error("No hay campos válidos para actualizar", 400);
             }
 
-            $params[] = $id;
-            $query = "UPDATE camisetas SET " . implode(", ", $updates) . " WHERE id = ?";
-            $stmt = $db->prepare($query);
-            $stmt->execute($params);
-
-            // Retornar camiseta actualizada
-            $query = "SELECT * FROM camisetas WHERE id = ?";
-            $stmt = $db->prepare($query);
-            $stmt->execute([$id]);
-            $camiseta = $stmt->fetch();
-
+            $camiseta = Camiseta::find($id);
             Response::success($camiseta);
         } catch (PDOException $e) {
             Response::error("Error al actualizar camiseta: " . $e->getMessage(), 500);
@@ -165,26 +107,61 @@ class CamisetaController
     public static function destroy($id): void
     {
         try {
-            $db = Database::getConnection();
-
-            // Verificar que la camiseta existe
-            $query = "SELECT * FROM camisetas WHERE id = ?";
-            $stmt = $db->prepare($query);
-            $stmt->execute([$id]);
-            $camiseta = $stmt->fetch();
+            $camiseta = Camiseta::find($id);
 
             if (!$camiseta) {
                 Response::error("Camiseta no encontrada", 404);
             }
 
-            // Eliminar
-            $query = "DELETE FROM camisetas WHERE id = ?";
-            $stmt = $db->prepare($query);
-            $stmt->execute([$id]);
-
+            Camiseta::delete($id);
             Response::success(['message' => 'Camiseta eliminada correctamente']);
         } catch (PDOException $e) {
             Response::error("Error al eliminar camiseta: " . $e->getMessage(), 500);
+        }
+    }
+
+    /**
+     * GET /api/camisetas/{id}/precio-final?cliente_id=X - Obtener precio con reglas de negocio
+     */
+    public static function getPrecioFinal($id): void
+    {
+        try {
+            $clienteId = $_GET['cliente_id'] ?? null;
+            if (!$clienteId) {
+                Response::error("El parámetro cliente_id es requerido", 400);
+            }
+
+            $camiseta = Camiseta::find($id);
+            if (!$camiseta) {
+                Response::error("Camiseta no encontrada", 404);
+            }
+
+            $cliente = Cliente::find($clienteId);
+            if (!$cliente) {
+                Response::error("Cliente no encontrado", 404);
+            }
+
+            $precioFinal = $camiseta['precio'];
+            $motivo = "Precio base aplicado";
+
+            if ($cliente['categoria'] === 'Preferencial' && !is_null($camiseta['precio_oferta'])) {
+                $precioFinal = $camiseta['precio_oferta'];
+                $motivo = "Precio de oferta aplicado (cliente Preferencial)";
+            }
+
+            Response::success([
+                'camiseta_id' => $camiseta['id'],
+                'titulo' => $camiseta['titulo'],
+                'precio' => $camiseta['precio'],
+                'precio_oferta' => $camiseta['precio_oferta'],
+                'cliente_id' => $cliente['id'],
+                'cliente_categoria' => $cliente['categoria'],
+                'descuento_cliente' => $cliente['descuento_porcentaje'],
+                'precio_final' => $precioFinal,
+                'motivo' => $motivo
+            ]);
+        } catch (PDOException $e) {
+            Response::error("Error al calcular precio final: " . $e->getMessage(), 500);
         }
     }
 }

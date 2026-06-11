@@ -1,0 +1,9 @@
+{
+  "rut": "98.765.432-1",
+  "nombre_comercial": "TDeportes",
+  "direccion": "Santiago",
+  "categoria": "Regular",
+  "contacto_nombre": "Pedro",
+  "contacto_email": "pedro@td.cl",
+  "descuento_porcentaje": 0
+}
