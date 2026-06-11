@@ -100,8 +100,10 @@ El ciclo de vida de una petición dentro de nuestra API sigue el patrón MVC est
 ## 👥 Equipo de Trabajo
 
 **Desarrollo Backend - IF201IINF**
+
 *   Barrera
 *   Ramírez
 *   Sepúlveda
+*   Torres
 
 *Instituto Profesional San Sebastián - Junio 2026*
